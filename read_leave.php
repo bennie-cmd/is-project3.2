@@ -19,6 +19,7 @@
     		header("location:read_leave.php");
 
     }
+
     $approved=1;
     $theid=intval($_GET['leaveid']);
     if (isset($_POST['approve'])) {
@@ -149,8 +150,17 @@
 						$days=$row['remaining_days'];
 						$avlbd=$row['available_days'];
 						$remain=$avlbd-$days;
-											?>                    
-						
+
+						 if (isset($_POST['change'])) {
+    				$newid= $row['employee_id'];
+    				$remain_days= "UPDATE register SET `available_days`='$remain' WHERE `employee_id`='$newid'";
+    				$result = mysqli_query($conn, $remain_days);
+						// var_dump($result);
+    				// header("location:pending.php");
+    				// echo "its is not working";
+    				}
+											?>              
+
 											<input type="hidden" name="employee_id" value="<?php echo $row['employee_id']; ?>">
 								<div class="row">
 									<div class="col-md-6 col-sm-12">
@@ -230,6 +240,8 @@
 <button name="approve" type="submit" class="btn btn-success">APPROVE</button>
 
 <button name="reject" type="submit" class="btn btn-danger">REJECT</button>
+
+<button name="change" type="submit" class="btn btn-warning">UPDATE DAYS</button>
 										</div>
 									</div>
 								</form>
@@ -285,6 +297,9 @@
 <script src="js/jquery-.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/anim.js"></script>
+
+
+
 
 </body>
 </html>
