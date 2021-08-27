@@ -106,7 +106,7 @@
 								
 								 <?php 
 								$mysqli = new mysqli('localhost', 'root','','employee_ls') or die(mysqli_error($mysqli));
-								 										$employee_id = $_SESSION['employee_id'];
+								 						$employee_id = $_SESSION['employee_id'];
 								 										
 					$result=mysqli_query($mysqli,"SELECT * FROM leave_details WHERE employee_id = '$employee_id'");
 											

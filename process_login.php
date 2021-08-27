@@ -27,7 +27,7 @@ if (isset($_SESSION['email'])) {
 	  				$_SESSION['email']=$row['email'];
 	  				$_SESSION['employee_id']=$row['employee_id'];
 	  				$_SESSION['available_days']=$row['available_days'];
-	  				header("location:leave_page.php");
+	  				header("location:leave_policy.php");
 	  			}
 	  			elseif ($row['user_type'] == "admin")
 	  			{

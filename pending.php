@@ -99,7 +99,7 @@
             $conn = new mysqli('localhost', 'root','','employee_ls');
 
             $sql = "SELECT leave_details.id as lid,register.firstname,register.lastname,register.department,register.employee_id,leave_details.type,leave_details.posting_date,leave_details.status,leave_details.isread FROM leave_details JOIN register on leave_details.employee_id=register.employee_id where status= '$status' order by lid ASC";
-                                    $query = mysqli_query($conn, $sql) or die(mysqli_error());
+                            $query = mysqli_query($conn, $sql) or die(mysqli_error());
                                     while ($row = mysqli_fetch_array($query)) {
                                  ?> 
         <div class="d-flex flex-wrap">
