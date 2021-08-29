@@ -29,6 +29,11 @@
 	    echo "<script>alert('END Date should be greater than START Date');</script>";
 	    echo "<script type='text/javascript'> document.location = 'leave_page.php'; </script>";
 	  }
+	elseif($num_days <= 0)
+	  {
+	  	echo "<script>alert('The Enddate has to be after Beginning Date')</script>";
+	  	echo "<script type='text/javascript'> document.location = 'leave_page.php';</script>";
+	  }
 	elseif($leave_days <= 0)
 	{
 		echo "<script>alert('YOU HAVE REACHED THE LEAVE LIMIT. LEAVE APPLICATION FAILED');</script>";

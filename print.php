@@ -35,8 +35,9 @@
         <div id="navbar-collapse-02" class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
                 
-                <li class="propClone"><a href="admin_interface.php">Employee Leave Request</a></li>
+                <li class="propClone"><a href="admin_interface.php">Employee Leave Requests</a></li>
                 <li class="propClone"><a href="update_policy.php">Leave Policy</a></li>
+                <li class="propClone"><a href="employee_details.php">Manage Employee Details</a></li>
                 <li class="propClone"><a href="logout.php" name="logout">Logout</a></li>
             </ul>
         </div>
@@ -47,7 +48,7 @@
             <div class="col-md-12 text-center">
                 <div class="text-pageheader">
                     <div class="subtext-image" data-scrollreveal="enter bottom over 1.7s after 0.0s">
-                          Administrator
+                         Approved Leaves Report 
                     </div>
                 </div>
             </div>
@@ -61,7 +62,7 @@
 <div class="container toparea">
     <div class="underlined-title">
         <div class="editContent">
-            <h1 class="text-center latestitems" style="color:#00bba7">All PENDING LEAVES</h1>
+            <h1 class="text-center latestitems" style="color:#00bba7">Print Reports</h1>
         
             <?php if (isset($_SESSION['message'])):?>
         <div class="alert alert-<?=$_SESSION['msg_type']?>">
@@ -88,78 +89,80 @@
             </span>
         </div>
     </div>
-    <div class="d-flex flex-wrap">
-    <a href="admin_interface.php" class="btn btn-warning">GO REVIEW</a>
-</div>
-    <div>
+   
         <?php
-                            $status=0;
-                            $readsts=0;
+ 
+ $conn = new mysqli('localhost', 'root','','employee_ls') or die(mysqli_error($conn));
+ $approved = 1;
+$ret=mysqli_query($conn,"SELECT register.firstname,register.lastname,register.employee_id,register.department,register.department,register.email,register.available_days,leave_details.type,leave_details.startdate,leave_details.enddate,leave_details.reasons,leave_details.posting_date,leave_details.status,leave_details.isread,leave_details.remaining_days FROM leave_details INNER JOIN register ON leave_details.employee_id=register.employee_id WHERE status='$approved'");
+        $cnt=1;
+while ($row=mysqli_fetch_array($ret)) {
+  ?>
+  <div id="exampl">
+        <table border="1" class="table table-bordered mg-b-0">
+              <tr>
+                <th colspan="4" style="text-align: center; font-size:22px;">Approved Employees</th>
 
-            $conn = new mysqli('localhost', 'root','','employee_ls');
 
-            $sql = "SELECT leave_details.id as lid,register.firstname,register.lastname,register.department,register.employee_id,leave_details.type,leave_details.posting_date,leave_details.status,leave_details.isread FROM leave_details JOIN register on leave_details.employee_id=register.employee_id where status= '$status' order by lid ASC";
-                            $query = mysqli_query($conn, $sql) or die(mysqli_error());
-                                    while ($row = mysqli_fetch_array($query)) {
-                                 ?> 
-        <div class="d-flex flex-wrap">
-        </div>
+              </tr>
+    
+                             <tr>
+                                <th>Employee Id</th>
+                                   <td><?php  echo $row['employee_id'];?></td>
+                                              
+                                <th>Department</th>
+                                   <td><?php  echo $row['department'];?></td>
+                                   </tr>
+                                <th>Full Name</th>
+                     <td><?php  echo $row['firstname'] ." ". $row['lastname'];?></td>
+                                <th>Email</th>
+                               <td><?php  echo $row['email'];?></td>
+                                   <tr>
+                                <th>Duration</th>
+                                   <td><?php  echo $row['remaining_days'];?></td>         
+                             
+                                <th>Begining Date</th>
+                                   <td><?php  echo $row['startdate'];?></td>
+                                   </tr>
+                                   <tr>
+                                    <th>Ending Date</th>
+                                      <td><?php  echo $row['enddate'];?></td>
+                                  
+                                    </tr>
+                                    <tr>
+                   <th>Status</th>
+                    <td> <?php  
+                  if($row['status']== 1)
+              {
+                echo "Approved";
+              }
+              
+              ?>
+                <tr>
+                  <td colspan="4" style="text-align:center; cursor:pointer"><i class="fa fa-print fa-2x" aria-hidden="true" OnClick="CallPrint(this.value)"  ></i></td>
+                </tr>
 
-       
-       <div class="card-box mb-30">
-                <!-- <div class="pd-20">
-                        <h2 class="text-blue h4">PENDING LEAVE</h2>
-                    </div> -->
-                <div class="pb-20">
-                    <table class="data-table table stripe hover nowrap">
-                        <thead>
-                            <tr>
-                                <th class="table-plus datatable-nosort">STAFF NAME</th>
-                                <th>LEAVE TYPE</th>
-                                <th>APPLIED DATE</th>
-                                <th>STATUS</th>
-                                <th>READ</th>
-                                <th class="datatable-nosort">ACTION</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                
-                                <td><?php echo $row['firstname']." ".$row['lastname'];?></td>
-                                <td><?php echo $row['type']; ?></td>
-                                <td><?php echo $row['posting_date']; ?></td>
-                                <td><?php $stats=$row['status'];
-                                 if($stats==1){
-                                  ?>
-                                      <span style="color: green">Approved</span>
-                                      <?php } if($stats==2)  { ?>
-                                     <span style="color: red">Rejected</span>
-                                      <?php } if($stats==0)  { ?>
-                                 <span style="color: blue">Pending</span>
-                                 <?php } ?>
-                                </td>
-                                <td><?php $stats=$row['isread'];
-                                 if($stats==1){
-                                  ?>
-                                           <span style="color: green">Read</span>
-                                            <?php } if($stats==2)  { ?>
-                                           <span style="color: red">Not Read</span>
-                                            <?php } if($stats==0)  { ?>
-                                           <span style="color: blue">Waiting To Be Read</span>
-                                           <?php } ?>
-                                </td>
-                                <form method="POST" action="">
-                                    <td>
-                                <a href="read_leave.php?leaveid=<?php echo$row['lid'];?>" class="btn btn-info" name="read">READ</a>
-                                    </td>
-                                </form>
-                            </tr>
-                            <?php }?>
+              </table>
+                       <?php 
+                        $cnt=$cnt+1;}?>
+                        </div>
+                          <script>
+              function CallPrint(strid) {
+              var prtContent = document.getElementById("exampl");
+              var WinPrint = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+              WinPrint.document.write(prtContent.innerHTML);
+              WinPrint.document.close();
+              WinPrint.focus();
+              WinPrint.print();
+              WinPrint.close();
+              }
+              </script> 
+              
+                    </div>
+                  </div>
+                </div>
+                
 
-                                    </tbody></table>
-        </div>
-    </div>
-</div>
                                 
 
 
@@ -170,7 +173,7 @@
     <div class="row">
         <div class="col-sm-10 col-sm-offset-1">
             <div class="item" data-scrollreveal="enter top over 0.4s after 0.1s">
-                <h1 class="callactiontitle">Mark as read then consult the leave committee for action <span class="callactionbutton"><i class="fa fa-gift"></i> NICE DAY</span>
+                <h1 class="callactiontitle"> <span class="callactionbutton"><i class="fa fa-gift"></i> NICE DAY</span>
                 </h1>
             </div>
         </div>

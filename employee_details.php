@@ -5,7 +5,6 @@
         header('location:login.php');
     }
   ?>
-
    
 <!DOCTYPE html>
 <html>
@@ -49,7 +48,7 @@
             <div class="col-md-12 text-center">
                 <div class="text-pageheader">
                     <div class="subtext-image" data-scrollreveal="enter bottom over 1.7s after 0.0s">
-                         Welcome Administrator
+                         Employee Records
                     </div>
                 </div>
             </div>
@@ -63,7 +62,7 @@
 <div class="container toparea">
     <div class="underlined-title">
         <div class="editContent">
-            <h1 class="text-center latestitems" style="color:#00bba7">All REQUESTED LEAVES</h1>
+            <h1 class="text-center latestitems" style="color:#00bba7">All REGISTERED EMPLOYEES</h1>
         
             <?php if (isset($_SESSION['message'])):?>
         <div class="alert alert-<?=$_SESSION['msg_type']?>">
@@ -82,18 +81,6 @@
 
               }
           ?>
-            <?php
-                $conn =mysqli_connect('localhost','root','','employee_ls');
-                
-                $new = "employee";
-        if (isset($_POST['change_days'])) {
-            $change = $_POST['selectleavedays'];
-                $query= "UPDATE register SET `available_days`='$change' WHERE `user_type`= '$new'";
-                $result = mysqli_query($conn, $query);
-                
-    }
-
-  ?>
         <div class="wow-hr type_short">
             <span class="wow-hr-h">
             <i class="fa fa-star"></i>
@@ -105,7 +92,7 @@
     <div>
         <?php
             $mysqli = new mysqli('localhost', 'root','','employee_ls') or die(mysqli_error($mysqli));
-    $result=mysqli_query($mysqli,"SELECT COUNT(*) AS totalnumber FROM leave_details;");
+    $result=mysqli_query($mysqli,"SELECT COUNT(*) AS totalnumber FROM register;");
     if ($result) {
         $row = mysqli_fetch_assoc($result);
         
@@ -113,31 +100,12 @@
 
         ?>
         <div class="d-flex flex-wrap">
-            
             <div style="font-weight: bolder; color:#00bba7;">
                 <?php echo $row['totalnumber'];?>
-
             </div>
-
-            <div style="font-weight: bolder; color:#00bba7;">TOTAL APPLIED LEAVES</div>
-            <form method="POST" action="">
-            <a href="pending.php" class="btn btn-warning">Check Pending Leaves</a>
-<button name="change_days" type="submit" class="btn btn-primary">CHANGE-LEAVE-DAYS</button> 
-            <div class="form-control">
-             <select name="selectleavedays" class="dropdown" placeholder="select leave days">
-                <option>14</option>
-                <option>30</option>
-                <option>90</option>
-                <option>1440</option>
-              </select>
-          </form>
-            </div>  
-            
+            <div style="font-weight: bolder; color:#00bba7;">REGISTERED EMPLOYEES</div>
+            <a href="print.php" class="btn btn-warning">PRINT REPORT</a>
         </div>
-    
-                
-                
-            
         
        
         <div class="card-box mb-30">
@@ -145,13 +113,12 @@
                         <thead>
                             <tr>
                                 <th class="table-plus">EMPLOYEE ID</th>
-                                <th>LEAVE TYPE</th>
-                                <th>DATE FROM</th>
-                                <th>DATE TO</th>
-                                <th>NO. OF DAYS</th>
-                                <th>STATUS</th>
-                                <th>READ</th>
-                                <th>REVIEW</th>
+                                <th>DEPARTMENT</th>
+                                <th>FIRSTNAME</th>
+                                <th>LASTNAME</th>
+                                <th>EMAIL</th>
+                                <th>ACTION</th>
+                                
                             </tr>
                         </thead>
                         <tbody>
@@ -160,47 +127,24 @@
                                  <?php 
                 $mysqli = new mysqli('localhost', 'root','','employee_ls');
                     $dell=0;
+                    $user ="employee";
                     // $readsts=0;                                                    
-                    $result="SELECT * FROM leave_details WHERE deleted = '$dell'";
+            $result="SELECT * FROM register WHERE deleted = '$dell' AND user_type='$user'";
                           $query = mysqli_query($mysqli, $result) or die(mysqli_error($mysqli));                   
                                     $cnt=1;
              while ($row=mysqli_fetch_array($query)) {
 ?>                  
                   <td> <?php echo $row['employee_id']; ?></td>  
-                  <td><?php echo $row['type'];?></td>
-                  <td><?php echo $row['startdate'];?></td>
-                  <td><?php echo $row['enddate'];?></td>
-                  <td><?php echo $row['remaining_days'];?></td>
-                  <td><?php $stats=$row['status'];
-                                       if($stats==1){
-                                        ?>
-                                           <span style="color: green">Approved</span>
-                                            <?php } if($stats==2)  { ?>
-                                           <span style="color: red">Not Approved</span>
-                                            <?php } if($stats==0)  { ?>
-                                           <span style="color: blue">Pending</span>
-                                           <?php } ?>
+                  <td><?php echo $row['department'];?></td>
+                  <td><?php echo $row['firstname'];?></td>
+                  <td><?php echo $row['lastname'];?></td>
+                  <td><?php echo $row['email'];?></td>
+                  <td>
+<a href="employee_details.php?edit=<?php echo $row['employee_id']; ?>" class="btn btn-info" name="">EDIT</a>
 
-                                    </td>
-                                    <td><?php $stats=$row['isread'];
-                                       if($stats==1){
-                                        ?>
-                                           <span style="color: green">Read</span>
-                                            <?php } if($stats==2)  { ?>
-                                           <span style="color: red">Not Read</span>
-                                            <?php } if($stats==0)  { ?>
-                                           <span style="color: blue">Waiting To Be Read</span>
-                                           <?php } ?>
-
-                                    </td>
-                                    <td>
-                                <a href="pending.php" class="btn btn-info" name="">CHECK
-                                    
-<a href="admin_process.php?removed=<?php echo $row['employee_id'];?>" class="btn btn-danger">DELETE</a>
+<a href="admin_process.php?deleted=<?php echo $row['employee_id']; ?>" class="btn btn-danger" name="removed">DELETE</a>
+                                        </td>
                             </tr>
-
-
-
                             <?php 
                         $cnt=$cnt+1;
                                         }?>
@@ -208,19 +152,62 @@
                                     </tbody></table>
         </div>
     </div>
-</div>
 <?php
-    $gone=1;    
-if (isset($_POST['remove'])) {
-    $remid=$_GET['removed'];
+    function pre_r( $array ){
+      echo '<pre>';
+      print_r($array);
+      echo '</pre>';
+
+    } 
     
-    $query= "UPDATE leave_details SET `deleted` ='$gone' WHERE `employee_id`='$remid'";
-    $result=mysqli_query($conn, $query);
-    var_dump($result);
-    echo"it works";
+  ?>
+  <!-- <div>
+       <?php require_once 'admin_process.php';?>
+  </div> -->
+
+  <div class="row justify-content-center">
+    <form action="admin_process.php" method="POST">
     
-}                                
-?>
+    <div id="form-group">
+    <label >Employee ID:</label>
+    <input type="text" autocomplete="off" name="employee_id" class="form-control" value="<?php echo ($employee_id)?>" placeholder="enter new id">
+    </div>
+    <div id="form-group">
+    <label>Department:</label>
+    <input type="text" autocomplete="off" name="department" class="form-control" value="<?php echo ($department)?>" placeholder="enter new department">
+    </div>
+    <div id="form-group">
+    <label>Firstname:</label>
+    <input type="text" autocomplete="off" name="firstname" class="form-control" value="<?php echo ($firstname)?>" placeholder="enter Firstname">
+    </div>
+    <div id="form-group">
+    <label>Lastname:</label>
+    <input type="text" autocomplete="off" name="lastname" class="form-control" value="<?php echo ($lastname)?>" placeholder="enter lastname">
+    </div>
+    <div id="form-group">
+    <label>Email:</label>
+    <input type="text" autocomplete="off" name="email" class="form-control" value="<?php echo ($email)?>" placeholder="enter new email address">
+    </div>
+
+    
+    <br>
+    <div id="form-group" class="text-center">
+      <?php
+      if ($update ==true):
+      ?>
+      
+        <button  class="btn btn-info" name="updated"> Update </button>
+      
+      <?php else: ?>
+        <button type="submit"  class="btn btn-primary" name="save"> Save </button>
+      <?php endif; ?>
+
+    </div>
+  
+  </form>
+  </div>
+                                
+
 
 
 <!-- CALL TO ACTION =============================-->
@@ -229,7 +216,7 @@ if (isset($_POST['remove'])) {
     <div class="row">
         <div class="col-sm-10 col-sm-offset-1">
             <div class="item" data-scrollreveal="enter top over 0.4s after 0.1s">
-                <h1 class="callactiontitle">Mark as read then consult the leave committee for action<span class="callactionbutton"><i class="fa fa-gift"></i> NICE DAY</span>
+                <h1 class="callactiontitle"> <span class="callactionbutton"><i class="fa fa-gift"></i> NICE DAY</span>
                 </h1>
             </div>
         </div>

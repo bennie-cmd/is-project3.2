@@ -11,13 +11,14 @@ if (isset($_SESSION['email'])) {
 			$password = $_POST['pass'];
 			$admin ="admin";
 			$employee = "employee";
+			$deleted = 0;
 			
 			
 			
 	    if (!empty($_POST['email']) && !empty($_POST['pass']))
 	  {
 	  		$password= md5($password);
-	  		$query="SELECT * FROM `register` WHERE `email`= '$email' AND `password` = '$password' limit 1";
+	  		$query="SELECT * FROM `register` WHERE `email`= '$email' AND `password` = '$password' AND `deleted` = '$deleted' limit 1";
 
 	  		$result=mysqli_query($conn, $query);
 

@@ -5,7 +5,6 @@
         header('location:login.php');
     }
   ?>
-
    
 <!DOCTYPE html>
 <html>
@@ -49,7 +48,7 @@
             <div class="col-md-12 text-center">
                 <div class="text-pageheader">
                     <div class="subtext-image" data-scrollreveal="enter bottom over 1.7s after 0.0s">
-                         Welcome Administrator
+                         Update Policy
                     </div>
                 </div>
             </div>
@@ -63,7 +62,7 @@
 <div class="container toparea">
     <div class="underlined-title">
         <div class="editContent">
-            <h1 class="text-center latestitems" style="color:#00bba7">All REQUESTED LEAVES</h1>
+            <h1 class="text-center latestitems" style="color:#00bba7">Organization Policies</h1>
         
             <?php if (isset($_SESSION['message'])):?>
         <div class="alert alert-<?=$_SESSION['msg_type']?>">
@@ -82,18 +81,6 @@
 
               }
           ?>
-            <?php
-                $conn =mysqli_connect('localhost','root','','employee_ls');
-                
-                $new = "employee";
-        if (isset($_POST['change_days'])) {
-            $change = $_POST['selectleavedays'];
-                $query= "UPDATE register SET `available_days`='$change' WHERE `user_type`= '$new'";
-                $result = mysqli_query($conn, $query);
-                
-    }
-
-  ?>
         <div class="wow-hr type_short">
             <span class="wow-hr-h">
             <i class="fa fa-star"></i>
@@ -105,7 +92,7 @@
     <div>
         <?php
             $mysqli = new mysqli('localhost', 'root','','employee_ls') or die(mysqli_error($mysqli));
-    $result=mysqli_query($mysqli,"SELECT COUNT(*) AS totalnumber FROM leave_details;");
+    $result=mysqli_query($mysqli,"SELECT COUNT(*) AS totalnumber FROM leave_types;");
     if ($result) {
         $row = mysqli_fetch_assoc($result);
         
@@ -113,45 +100,24 @@
 
         ?>
         <div class="d-flex flex-wrap">
-            
             <div style="font-weight: bolder; color:#00bba7;">
                 <?php echo $row['totalnumber'];?>
-
             </div>
-
-            <div style="font-weight: bolder; color:#00bba7;">TOTAL APPLIED LEAVES</div>
-            <form method="POST" action="">
-            <a href="pending.php" class="btn btn-warning">Check Pending Leaves</a>
-<button name="change_days" type="submit" class="btn btn-primary">CHANGE-LEAVE-DAYS</button> 
-            <div class="form-control">
-             <select name="selectleavedays" class="dropdown" placeholder="select leave days">
-                <option>14</option>
-                <option>30</option>
-                <option>90</option>
-                <option>1440</option>
-              </select>
-          </form>
-            </div>  
+            <div style="font-weight: bolder; color:#00bba7;">ORGANIZATION POLICIES</div>
             
         </div>
-    
-                
-                
-            
         
        
         <div class="card-box mb-30">
                     <table class="data-table table stripe hover nowrap" style="color: black;">
                         <thead>
                             <tr>
-                                <th class="table-plus">EMPLOYEE ID</th>
-                                <th>LEAVE TYPE</th>
-                                <th>DATE FROM</th>
-                                <th>DATE TO</th>
-                                <th>NO. OF DAYS</th>
-                                <th>STATUS</th>
-                                <th>READ</th>
-                                <th>REVIEW</th>
+                                <th class="table-plus">POLICY ID</th>
+                                <th>NAME</th>
+                                <th>TOTAL DAYS</th>
+                                <th>POLICY GOVERNANCE</th>
+                                <th>ACTION</th>
+                                
                             </tr>
                         </thead>
                         <tbody>
@@ -160,47 +126,24 @@
                                  <?php 
                 $mysqli = new mysqli('localhost', 'root','','employee_ls');
                     $dell=0;
+                    $user ="employee";
                     // $readsts=0;                                                    
-                    $result="SELECT * FROM leave_details WHERE deleted = '$dell'";
+            $result="SELECT * FROM leave_types ";
                           $query = mysqli_query($mysqli, $result) or die(mysqli_error($mysqli));                   
                                     $cnt=1;
              while ($row=mysqli_fetch_array($query)) {
 ?>                  
-                  <td> <?php echo $row['employee_id']; ?></td>  
-                  <td><?php echo $row['type'];?></td>
-                  <td><?php echo $row['startdate'];?></td>
-                  <td><?php echo $row['enddate'];?></td>
-                  <td><?php echo $row['remaining_days'];?></td>
-                  <td><?php $stats=$row['status'];
-                                       if($stats==1){
-                                        ?>
-                                           <span style="color: green">Approved</span>
-                                            <?php } if($stats==2)  { ?>
-                                           <span style="color: red">Not Approved</span>
-                                            <?php } if($stats==0)  { ?>
-                                           <span style="color: blue">Pending</span>
-                                           <?php } ?>
+                  <td> <?php echo $row['id']; ?></td>  
+                  <td><?php echo $row['name'];?></td>
+                  <td><?php echo $row['total_days'];?></td>
+                  <td><?php echo $row['policy'];?></td>
+                  
+                  <td>
 
-                                    </td>
-                                    <td><?php $stats=$row['isread'];
-                                       if($stats==1){
-                                        ?>
-                                           <span style="color: green">Read</span>
-                                            <?php } if($stats==2)  { ?>
-                                           <span style="color: red">Not Read</span>
-                                            <?php } if($stats==0)  { ?>
-                                           <span style="color: blue">Waiting To Be Read</span>
-                                           <?php } ?>
 
-                                    </td>
-                                    <td>
-                                <a href="pending.php" class="btn btn-info" name="">CHECK
-                                    
-<a href="admin_process.php?removed=<?php echo $row['employee_id'];?>" class="btn btn-danger">DELETE</a>
+<a href="admin_process.php?gone=<?php echo $row['id']; ?>" class="btn btn-danger" name="nomore">DELETE</a>
+                                        </td>
                             </tr>
-
-
-
                             <?php 
                         $cnt=$cnt+1;
                                         }?>
@@ -208,19 +151,46 @@
                                     </tbody></table>
         </div>
     </div>
-</div>
 <?php
-    $gone=1;    
-if (isset($_POST['remove'])) {
-    $remid=$_GET['removed'];
+    function pre_r( $array ){
+      echo '<pre>';
+      print_r($array);
+      echo '</pre>';
+
+    } 
     
-    $query= "UPDATE leave_details SET `deleted` ='$gone' WHERE `employee_id`='$remid'";
-    $result=mysqli_query($conn, $query);
-    var_dump($result);
-    echo"it works";
+  ?>
+  
+
+  <div class="row justify-content-center">
+    <form action="admin_process.php" method="POST">
     
-}                                
-?>
+    <div id="form-group">
+    <label >Name:</label>
+    <input type="text" autocomplete="off" name="name" class="form-control" value="<?php?>" placeholder="enter new policy name">
+    </div>
+    <div id="form-group">
+    <label>Total Days:</label>
+    <input type="text" autocomplete="off" name="total" class="form-control" value="<?php ?>" placeholder="enter new days limit">
+    </div>
+    <div id="form-group">
+    <label>Policy:</label>
+    <input type="text" autocomplete="off" name="policy" class="form-control" value="<?php ?>" placeholder="policy description">
+    </div>
+    
+    <br>
+    <div id="form-group" class="text-center">
+      
+        <button  class="btn btn-info" name="updated"> Update </button>
+      
+      
+
+    </div>
+  
+  </form>
+  </div>
+                                
+
 
 
 <!-- CALL TO ACTION =============================-->
@@ -229,7 +199,7 @@ if (isset($_POST['remove'])) {
     <div class="row">
         <div class="col-sm-10 col-sm-offset-1">
             <div class="item" data-scrollreveal="enter top over 0.4s after 0.1s">
-                <h1 class="callactiontitle">Mark as read then consult the leave committee for action<span class="callactionbutton"><i class="fa fa-gift"></i> NICE DAY</span>
+                <h1 class="callactiontitle"> <span class="callactionbutton"><i class="fa fa-gift"></i> NICE DAY</span>
                 </h1>
             </div>
         </div>

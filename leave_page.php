@@ -37,7 +37,7 @@
 				<li class="propClone"><a href="index.php">Home</a></li>
 				<li class="propClone"><a href="leave_page.php">Leave Request</a></li>
 				<li class="propClone"><a href="leave_policy.php">Leave Policy</a></li>
-				<li class="propClone"><a href="Employee_check.php">Unavailable employees</a></li>
+				<li class="propClone"><a href="employee_check.php">Unavailable employees</a></li>
 				<li class="propClone"><a href="logout.php" name="logout">Logout</a></li>
 			</ul>
 		</div>
@@ -153,7 +153,7 @@ while ($row=mysqli_fetch_array($ret)) {
 								<div class="row">
 									<div class="col-md-6 col-sm-12">
 										<div class="form-group">
-											<label style="color: black;">Begining Date</label>
+											<label style="color: black;">Beginning Date</label>
 											<input type="date" name="begin" class="custom-select form-control" required="true" autocomplete="off">
 										</div>
 									</div>

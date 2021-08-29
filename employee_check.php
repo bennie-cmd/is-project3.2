@@ -39,7 +39,7 @@
 				<li class="propClone"><a href="index.php">Home</a></li>
 				<li class="propClone"><a href="leave_page.php">Leave Request</a></li>
 				<li class="propClone"><a href="leave_policy.php">Leave Policy</a></li>
-				<li class="propClone"><a href="Employee_check.php">Unavailable employees</a></li>
+				<li class="propClone"><a href="employee_check.php">Unavailable employees</a></li>
 				<li class="propClone"><a href="logout.php" name="logout">Logout</a></li>
 			</ul>
 		</div>
@@ -114,7 +114,7 @@
 								$mysqli = new mysqli('localhost', 'root','','employee_ls') or die(mysqli_error($mysqli));
 
 															
-					$result=mysqli_query($mysqli,"SELECT register.firstname,register.lastname,register.employee_id,register.department,register.department,register.email,register.available_days,leave_details.type,leave_details.startdate,leave_details.enddate,leave_details.reasons,leave_details.posting_date,leave_details.status,leave_details.isread,leave_details.remaining_days FROM leave_details INNER JOIN register ON leave_details.employee_id=register.employee_id WHERE enddate >= '$avlbl_employees'");
+					$result=mysqli_query($mysqli,"SELECT register.firstname,register.lastname,register.employee_id,register.department,register.department,register.email,register.available_days,leave_details.type,leave_details.startdate,leave_details.enddate,leave_details.reasons,leave_details.posting_date,leave_details.status,leave_details.isread,leave_details.remaining_days FROM leave_details INNER JOIN register ON leave_details.employee_id=register.employee_id WHERE enddate >= '$avlbl_employees' AND status = 1");
 
                                     $cnt=1;
              while ($row=mysqli_fetch_array($result)) {
