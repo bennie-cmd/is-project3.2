@@ -124,7 +124,7 @@
             <a href="pending.php" class="btn btn-warning">Check Pending Leaves</a>
 <button name="change_days" type="submit" class="btn btn-primary">CHANGE-LEAVE-DAYS</button> 
             <div class="form-control">
-             <select name="selectleavedays" class="dropdown" placeholder="select leave days">
+             <select name="selectleavedays" class="dropdown" placeholder="select leave days" required>
                 <option>14</option>
                 <option>30</option>
                 <option>90</option>
@@ -196,7 +196,7 @@
                                     <td>
                                 <a href="pending.php" class="btn btn-info" name="">CHECK
                                     
-<a href="admin_process.php?removed=<?php echo $row['employee_id'];?>" class="btn btn-danger">DELETE</a>
+<a href="admin_process.php?removed=<?php echo $row['id'];?>" class="btn btn-danger">DELETE</a>
                             </tr>
 
 

@@ -32,7 +32,7 @@ $conn = new mysqli('localhost', 'root','','employee_ls');
 if (isset($_GET['removed'])){
 	$newest=$_GET['removed'];
 	
-	$asql = "UPDATE leave_details SET `deleted` = '$dell' WHERE  `employee_id`='$newest'";
+	$asql = "UPDATE leave_details SET `deleted` = '$dell' WHERE  `id`='$newest'";
 	mysqli_query($conn, $asql);
 	
 	$_SESSION['message'] = "Record has been deleted";
