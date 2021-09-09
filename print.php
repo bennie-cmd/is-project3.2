@@ -127,14 +127,15 @@ while ($row=mysqli_fetch_array($ret)) {
                                    <tr>
                                     <th>Ending Date</th>
                                       <td><?php  echo $row['enddate'];?></td>
-                                  
+                                    <th>Leave Type</th>
+                                      <td><?php echo $row['type'];?></td>
                                     </tr>
                                     <tr>
                    <th>Status</th>
                     <td> <?php  
                   if($row['status']== 1)
               {
-                echo "Approved";
+                echo "Approved" ." "." And Eligible for Salary";
               }
               
               ?>

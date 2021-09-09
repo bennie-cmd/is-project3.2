@@ -92,7 +92,7 @@
     <div>
         <?php
             $mysqli = new mysqli('localhost', 'root','','employee_ls') or die(mysqli_error($mysqli));
-    $result=mysqli_query($mysqli,"SELECT COUNT(*) AS totalnumber FROM register;");
+    $result=mysqli_query($mysqli,"SELECT COUNT(*) AS totalnumber FROM register WHERE deleted = 0;");
     if ($result) {
         $row = mysqli_fetch_assoc($result);
         
