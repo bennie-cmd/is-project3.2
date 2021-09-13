@@ -7,5 +7,11 @@ include 'process_login.php';
       unset($_SESSION['email']);
       header("location: index.php");
     }
+  if (isset($_SESSION['admin_id']))
+    {
+      session_destroy();
+      unset($_SESSION['employee_id']);
+      header("location: index.php");
+    }
 
 ?>

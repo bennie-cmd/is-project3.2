@@ -154,7 +154,7 @@ while ($row=mysqli_fetch_array($ret)) {
 									<div class="col-md-6 col-sm-12">
 										<div class="form-group">
 											<label style="color: black;">Beginning Date</label>
-											<input type="date" name="begin" class="custom-select form-control" required="true" autocomplete="off">
+											<input type="date" id="date" name="begin" class="custom-select form-control" required="true" autocomplete="off">
 										</div>
 									</div>
 
@@ -245,6 +245,8 @@ while ($row=mysqli_fetch_array($ret)) {
 <script src="js/jquery-.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/anim.js"></script>
+
+
 
 </body>
 </html>

@@ -32,8 +32,8 @@ if (isset($_SESSION['email'])) {
 	  			}
 	  			elseif ($row['user_type'] == "admin")
 	  			{
-	  			$_SESSION['email']=$row['email'];
-	  			$_SESSION['employee_id']=$row['employee_id'];
+	  			$_SESSION['admin_email']=$row['email'];
+	  			$_SESSION['admin_id']=$row['employee_id'];
 	  			header("location:admin_interface.php");
 				}
 	  		} 

@@ -109,7 +109,8 @@
 							<tr>
 								
 								 <?php
-					$avlbl_employees= date("d-m-y");	
+					$avlbl_employees= date("d-m-y");
+					// $fromdate = date('d-m-Y', strtotime($avlbl_employees));	
 					echo "$avlbl_employees"; 
 								$mysqli = new mysqli('localhost', 'root','','employee_ls') or die(mysqli_error($mysqli));
 

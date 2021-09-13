@@ -1,7 +1,7 @@
  <?php 
     include 'process_login.php';
 
-    if (!isset($_SESSION['email'])) {
+    if (!isset($_SESSION['admin_id'])) {
     	header('location:login.php');
     }
 

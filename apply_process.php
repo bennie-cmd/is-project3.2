@@ -6,6 +6,7 @@
 {  	
 	session_start();
 	
+	$avlbl_employees= date("d-m-y");
 	$available_days=$_SESSION['available_days'];
 	$employee_id = $_SESSION['employee_id']; 
 	$leave_type = $_POST['leave_type'];
@@ -43,6 +44,10 @@
 	  elseif ($num_days > $available_days) {
 
 	  	echo "<script>alert('YOU HAVE EXCEEDED YOUR LEAVE LIMIT.');</script>";
+	  	echo "<script type='text/javascript'> document.location = 'leave_page.php'; </script>";
+	  }
+	  elseif( $fromdate < $avlbl_employees ){
+	  	echo "<script>alert('THE SELECETED BEGINNING OR ENDING DATE, HAS ALREADY PASSED..');</script>";
 	  	echo "<script type='text/javascript'> document.location = 'leave_page.php'; </script>";
 	  }
 
