@@ -4,6 +4,7 @@
 
 $conn = new mysqli('localhost', 'root','','employee_ls');
 
+$id =0;
 $update = false;
 $employee_id = '';
 $firstname = '';
@@ -61,7 +62,11 @@ if (isset($_GET['edit'])) {
 
 /////////////UPDATE BUTTON//////////////////////
 
-if (isset($_POST['updated'])) {
+
+}
+
+if (isset($_POST['update'])) {
+	$id = $_POST['id'];
 	$employee_id = $_POST['employee_id'];
 	$department = $_POST['department'];
 	$firstname = $_POST['firstname'];
@@ -70,16 +75,17 @@ if (isset($_POST['updated'])) {
 
 	$conn = new mysqli('localhost', 'root','','employee_ls');
 
-		$csql = "UPDATE register SET `employee_id`='$employee_id', `department`='$department', `firstname`='$firstname', `lastname`='$lastname', `email`='$email' WHERE `employee_id`='$employee_id'" or die(mysqli_error($conn));
-		mysqli_query($conn, $csql);
+		$csql = "UPDATE register SET `employee_id`='$employee_id', `department`='$department', `firstname`='$firstname', `lastname`='$lastname', `email`='$email' WHERE `employee_id`='$id'" or die(mysqli_error($conn));
+		 mysqli_query($conn, $csql);
+		
 
 		$_SESSION['message']= "Recored has been successfully updated!";
 		$_SESSION['msg_type']="warning";
 
-		header('location: employee_details.php');
+		header("location:employee_details.php");
+	}
 
 		 
-	}
-}  	
+	 	
 ?>
 

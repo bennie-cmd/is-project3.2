@@ -1,69 +1,146 @@
-<?php
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto:200,300,400,500,600,700" rel="stylesheet">
+</head>
+<body>
 
-//Retrieve form data. 
-//GET - user submitted data using AJAX
-//POST - in case user does not support javascript, we'll use POST instead
-$name = ($_GET['name']) ? $_GET['name'] : $_POST['name'];
-$email = ($_GET['email']) ?$_GET['email'] : $_POST['email'];
-$comment = ($_GET['comment']) ?$_GET['comment'] : $_POST['comment'];
+<!-- HEADER =============================-->
+<header class="item header margin-top-0">
+<div class="wrapper">
+	<nav role="navigation" class="navbar navbar-white navbar-embossed navbar-lg navbar-fixed-top">
+	<div class="container">
+		<div class="navbar-header">
+			<button data-target="#navbar-collapse-02" data-toggle="collapse" class="navbar-toggle" type="button">
+			<i class="fa fa-bars"></i>
+			<span class="sr-only">Toggle navigation</span>
+			</button>
+			<a href="index.html" class="navbar-brand brand"> contact </a>
+		</div>
+		<div id="navbar-collapse-02" class="collapse navbar-collapse">
+			<ul class="nav navbar-nav navbar-right">
+				
+				<li class="propClone"><a href="leave_page.php">Request for a leave</a></li>
+			</ul>
+		</div>
+	</div>
+	</nav>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 text-center">
+				<div class="text-pageheader">
+					<div class="subtext-image" data-scrollreveal="enter bottom over 1.7s after 0.0s">
+						 Contact The Manager
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</header>
+<!-- CONTENT =============================-->
+<section class="item content">
+<div class="container toparea">
+	<div class="underlined-title">
+		<div class="editContent">
+			<h1 class="text-center latestitems">Get in Touch</h1>
+		</div>
+		<div class="wow-hr type_short">
+			<span class="wow-hr-h">
+			<i class="fa fa-star"></i>
+			<i class="fa fa-star"></i>
+			<i class="fa fa-star"></i>
+			</span>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-8 col-lg-offset-2">
+			<div class="done">
+				<!-- <div class="alert alert-success">
+					<button type="button" class="close" data-dismiss="alert">×</button>
+					Your message has been sent. Thank you!
+				</div> -->
+			</div>
+			<form method="POST" action="contact_process.php" id="contactform">
+				<div class="form">
+					<input type="text" name="name" placeholder="Your Name *">
+					<input type="text" name="email" placeholder="Your E-mail Address *">
+					<textarea name="comment" rows="7" placeholder="Type your Message *"></textarea>
+					<input type="submit" name="send" id="submit" class="clearfix btn" value="Send">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+</div>
+</section>
+<!-- CALL TO ACTION =============================-->
+<section class="content-block" style="background-color:#00bba7;">
+<div class="container text-center">
+<div class="row">
+	<div class="col-sm-10 col-sm-offset-1">
+		<div class="item" data-scrollreveal="enter top over 0.4s after 0.1s">
+			<h1 class="callactiontitle"> Be patient when waiting for a reply <span class="callactionbutton"><i class="fa fa-gift"></i> NICE DAY</span>
+			</h1>
+		</div>
+	</div>
+</div>
+</div>
+<script>
 
-//flag to indicate which method it uses. If POST set it to 1
+	    $(document).ready(function(){
+        $("#submit").click(function(event){
+         event.preventDefault();
+        var datas = $('#contactform').serialize();
 
-if ($_POST) $post=1;
+            $.ajax({
+                type: 'POST',
+                url: 'contact_process.php.php',
+                data: datas,
 
-//Simple server side validation for POST data, of course, you should validate the email
-if (!$name) $errors[count($errors)] = 'Please enter your name.';
-if (!$email) $errors[count($errors)] = 'Please enter your email.'; 
-if (!$comment) $errors[count($errors)] = 'Please enter your message.'; 
+                success: function(data) {
+                    alert(data)
+                    $("l").text(data);
 
-//if the errors array is empty, send the mail
-if (!$errors) {
+                }
+            });
+   });
+});
+</script>
+</section>
+<!-- FOOTER =============================-->
+<div class="footer text-center">
+<div class="container">
+	<div class="row">
+		<p class="footernote">
+			 manager-contact-page
+		</p>
+		<ul class="social-iconsfooter">
+			<li><a href="#"><i class="fa fa-phone"></i></a></li>
+			<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+			<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+			<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+			<li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+		</ul>
+		<p>
+			 &copy; 2017 Your Website Name<br/>
+			 <a href="">bennie_ka</a>
+		</p>
+	</div>
+</div>
+</div>
 
-	//recipient - replace your email here
-	$to = 'wowthemesnet@gmail.com';	
-	//sender - from the form
-	$from = $name . ' <' . $email . '>';
-	
-	//subject and the html message
-	$subject = 'Message via Scorilo HTML from ' . $name;	
-	$message = 'Name: ' . $name . '<br/><br/>
-		       Email: ' . $email . '<br/><br/>		
-		       Message: ' . nl2br($comment) . '<br/>';
-
-	//send the mail
-	$result = sendmail($to, $subject, $message, $from);
-	
-	//if POST was used, display the message straight away
-	if ($_POST) {
-		if ($result) echo 'Thank you! We have received your message.';
-		else echo 'Sorry, unexpected error. Please try again later';
-		
-	//else if GET was used, return the boolean value so that 
-	//ajax script can react accordingly
-	//1 means success, 0 means failed
-	} else {
-		echo $result;	
-	}
-
-//if the errors array has values
-} else {
-	//display the errors message
-	for ($i=0; $i<count($errors); $i++) echo $errors[$i] . '<br/>';
-	echo '<a href="index.html">Back</a>';
-	exit;
-}
-
-
-//Simple mail function with HTML header
-function sendmail($to, $subject, $message, $from) {
-	$headers = "MIME-Version: 1.0" . "\r\n";
-	$headers .= "Content-type:text/html;charset=iso-8859-1" . "\r\n";
-	$headers .= 'From: ' . $from . "\r\n";
-	
-	$result = mail($to,$subject,$message,$headers);
-	
-	if ($result) return 1;
-	else return 0;
-}
-
-?>
+<!-- SCRIPTS =============================-->
+<script src="js/jquery-.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/anim.js"></script>
+<script src="js/validate.js"></script>
+</body>
+</html>

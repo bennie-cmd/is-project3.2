@@ -63,6 +63,8 @@
     <div class="underlined-title">
         <div class="editContent">
             <h1 class="text-center latestitems" style="color:#00bba7">All REGISTERED EMPLOYEES</h1>
+
+
         
             <?php if (isset($_SESSION['message'])):?>
         <div class="alert alert-<?=$_SESSION['msg_type']?>">
@@ -73,14 +75,6 @@
           </div>
           <?php endif ?>
         
-          <?php 
-              if (isset($_POST['logout'])) {
-                $_SESSION['message'] = "Logout successful";
-                $_SESSION['msg_type'] = "danger"; 
-                header("location: index.php");
-
-              }
-          ?>
         <div class="wow-hr type_short">
             <span class="wow-hr-h">
             <i class="fa fa-star"></i>
@@ -169,6 +163,7 @@
     <form action="admin_process.php" method="POST">
     
     <div id="form-group">
+        <input type="hidden" name="id" value="<?php echo($employee_id)?>">
     <label >Employee ID:</label>
     <input type="text" autocomplete="off" name="employee_id" class="form-control" value="<?php echo ($employee_id)?>" placeholder="enter new id">
     </div>
@@ -196,7 +191,7 @@
       if ($update ==true):
       ?>
       
-        <button  class="btn btn-info" name="updated"> Update </button>
+        <button  class="btn btn-info" name="update"> Update </button>
       
       <?php else: ?>
         <button type="submit"  class="btn btn-primary" name="save"> Save </button>
